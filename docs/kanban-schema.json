@@ -1,0 +1,62 @@
+{
+  "database": "sqlite",
+  "tables": [
+    {
+      "name": "users",
+      "columns": [
+        {"name": "id", "type": "text", "primary_key": true},
+        {"name": "username", "type": "text", "unique": true, "nullable": false},
+        {"name": "password_hash", "type": "text", "nullable": false},
+        {"name": "created_at", "type": "text", "nullable": false}
+      ]
+    },
+    {
+      "name": "boards",
+      "columns": [
+        {"name": "id", "type": "text", "primary_key": true},
+        {"name": "user_id", "type": "text", "nullable": false, "unique": true},
+        {"name": "title", "type": "text", "nullable": false},
+        {"name": "created_at", "type": "text", "nullable": false},
+        {"name": "updated_at", "type": "text", "nullable": false}
+      ],
+      "foreign_keys": [
+        {"column": "user_id", "references": "users.id", "on_delete": "cascade"}
+      ]
+    },
+    {
+      "name": "columns",
+      "columns": [
+        {"name": "id", "type": "text", "primary_key": true},
+        {"name": "board_id", "type": "text", "nullable": false},
+        {"name": "title", "type": "text", "nullable": false},
+        {"name": "position", "type": "integer", "nullable": false},
+        {"name": "created_at", "type": "text", "nullable": false},
+        {"name": "updated_at", "type": "text", "nullable": false}
+      ],
+      "foreign_keys": [
+        {"column": "board_id", "references": "boards.id", "on_delete": "cascade"}
+      ],
+      "indexes": [
+        {"columns": ["board_id", "position"], "unique": true}
+      ]
+    },
+    {
+      "name": "cards",
+      "columns": [
+        {"name": "id", "type": "text", "primary_key": true},
+        {"name": "column_id", "type": "text", "nullable": false},
+        {"name": "title", "type": "text", "nullable": false},
+        {"name": "details", "type": "text", "nullable": false},
+        {"name": "position", "type": "integer", "nullable": false},
+        {"name": "created_at", "type": "text", "nullable": false},
+        {"name": "updated_at", "type": "text", "nullable": false}
+      ],
+      "foreign_keys": [
+        {"column": "column_id", "references": "columns.id", "on_delete": "cascade"}
+      ],
+      "indexes": [
+        {"columns": ["column_id", "position"], "unique": true}
+      ]
+    }
+  ]
+}

@@ -8,7 +8,8 @@ import { NewCardForm } from "@/components/NewCardForm";
 type KanbanColumnProps = {
   column: Column;
   cards: Card[];
-  onRename: (columnId: string, title: string) => void;
+  onRenameChange: (columnId: string, title: string) => void;
+  onRenameCommit: (columnId: string, title: string) => void;
   onAddCard: (columnId: string, title: string, details: string) => void;
   onDeleteCard: (columnId: string, cardId: string) => void;
 };
@@ -16,7 +17,8 @@ type KanbanColumnProps = {
 export const KanbanColumn = ({
   column,
   cards,
-  onRename,
+  onRenameChange,
+  onRenameCommit,
   onAddCard,
   onDeleteCard,
 }: KanbanColumnProps) => {
@@ -41,7 +43,13 @@ export const KanbanColumn = ({
           </div>
           <input
             value={column.title}
-            onChange={(event) => onRename(column.id, event.target.value)}
+            onChange={(event) => onRenameChange(column.id, event.target.value)}
+            onBlur={(event) => onRenameCommit(column.id, event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.currentTarget.blur();
+              }
+            }}
             className="mt-3 w-full bg-transparent font-display text-lg font-semibold text-[var(--navy-dark)] outline-none"
             aria-label="Column title"
           />
